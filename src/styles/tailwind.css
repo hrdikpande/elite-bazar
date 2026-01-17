@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* 
+  Global Color Definitions - Split-Theme System
+  
+  Implementation Guide:
+  - User Portal: [data-theme="user"] (Dark, Obsidian, Premium)
+  - Admin Portal: [data-theme="admin"] (Light, Clean, Arctic)
+*/
+
+/* 
+  1. USER PORTAL (DEFAULT & EXPLICIT) 
+  Mood: Dark, Premium, Futuristic
+*/
+:root,
+[data-theme="user"] {
+  color-scheme: dark;
+
+  /* Base Palette: OPSIDIAN AURORA */
+  --color-obsidian: #0B0F14;
+  --color-charcoal: #121826;
+  --color-platinum: #E5E7EB;
+  --color-cool-grey: #D1D5DB; /* Brightened from #9CA3AF for better contrast on dark */
+  --color-indigo: #5B6CFF;
+  --color-cyan: #22D3EE;
+
+  /* Semantic Mapping */
+  --background: var(--color-obsidian);
+  --foreground: var(--color-platinum);
+
+  --card: var(--color-charcoal);
+  --card-foreground: var(--color-platinum);
+
+  --popover: var(--color-charcoal);
+  --popover-foreground: var(--color-platinum);
+
+  --primary: var(--color-indigo);
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #1F2937;
+  --secondary-foreground: var(--color-platinum);
+
+  --muted: #111827;
+  --muted-foreground: var(--color-cool-grey);
+
+  --accent: var(--color-cyan);
+  --accent-foreground: #000000;
+
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+
+  /* Semantic Data Colors */
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --info: #0EA5E9;
+
+  --border: #1F2937;
+  --input: #1F2937;
+  --ring: var(--color-indigo);
+
+  --radius: 0.5rem;
+}
+
+/* 
+  2. ADMIN & DISTRIBUTOR PORTAL 
+  Mood: Clean, Analytical, SaaS-grade
+*/
+[data-theme="admin"] {
+  color-scheme: light;
+
+  /* Base Palette: ARCTIC CLARITY */
+  --color-frost: #F9FAFB;
+  --color-pure-white: #FFFFFF;
+  --color-graphite: #111827;
+  --color-slate-grey: #6B7280;
+  --color-deep-blue: #2563EB;
+  --color-light-grey: #E5E7EB;
+
+  /* Semantic Mapping */
+  --background: var(--color-frost);
+  --foreground: var(--color-graphite);
+
+  --card: var(--color-pure-white);
+  --card-foreground: var(--color-graphite);
+
+  --popover: var(--color-pure-white);
+  --popover-foreground: var(--color-graphite);
+
+  --primary: var(--color-deep-blue);
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #F3F4F6;
+  --secondary-foreground: var(--color-graphite);
+
+  --muted: #F3F4F6;
+  --muted-foreground: var(--color-slate-grey);
+
+  --accent: var(--color-deep-blue);
+  --accent-foreground: #FFFFFF;
+
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+
+  /* Semantic Data Colors */
+  --success: #16A34A;
+  --warning: #F59E0B;
+  --info: #0D9488;
+
+  --border: var(--color-light-grey);
+  --input: var(--color-light-grey);
+  --ring: var(--color-deep-blue);
+}
+
+/* 
+  Tailwind v4 Theme Configuration 
+  Maps CSS variables to Tailwind tokens.
+*/
+@theme {
+  --font-heading: 'Montserrat', 'Inter', sans-serif;
+  --font-sans: 'Inter', 'Open Sans', sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  html,
+  body {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+}
