@@ -513,8 +513,18 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
-    toast.info("Logged out successfully");
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      // Explicitly clear state to ensure immediate UI update
+      setUser(null);
+      setWishlist([]);
+      setAddresses([]);
+      setOrders([]); // Clear orders as well
+      toast.info("Logged out successfully");
+    }
   };
 
 

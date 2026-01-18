@@ -70,8 +70,11 @@ export default function DistributorDashboard() {
   }
 
   const handleLogout = async () => {
-    await logout();
-    navigate('/distributor/login');
+    try {
+      await logout();
+    } finally {
+      navigate('/distributor/login');
+    }
   };
 
   const handlePasswordChange = async (e: React.FormEvent) => {

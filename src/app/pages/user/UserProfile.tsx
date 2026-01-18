@@ -36,8 +36,11 @@ export default function UserProfile() {
     }, [user, navigate]);
 
     const handleLogout = async () => {
-        await logout();
-        navigate('/');
+        try {
+            await logout();
+        } finally {
+            navigate('/');
+        }
     };
 
     const wishlistedProducts = products.filter(p => wishlist.includes(p.id));
