@@ -69,8 +69,8 @@ export default function DistributorDashboard() {
     return null;
   }
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate('/distributor/login');
   };
 
