@@ -130,3 +130,5 @@ Desktop.ini
 *.swo
  node_modules
 
+
+package-lock.json
