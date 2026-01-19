@@ -14,9 +14,19 @@ import { toast } from 'sonner';
 import { ImageWithFallback } from '../../components/figma/ImageWithFallback';
 
 
+interface ProductFormData {
+  name: string;
+  price: string;
+  description: string;
+  detailedDescription: string;
+  image: string;
+  category: string;
+  stock: 'in-stock' | 'out-of-stock' | 'low-stock';
+}
+
 interface ProductFormProps {
-  formData: any;
-  setFormData: React.Dispatch<React.SetStateAction<any>>;
+  formData: ProductFormData;
+  setFormData: React.Dispatch<React.SetStateAction<ProductFormData>>;
   handleSubmit: (e: React.FormEvent) => void;
   isEditing: boolean;
   onCancel: () => void;
@@ -49,7 +59,7 @@ const ProductForm = ({ formData, setFormData, handleSubmit, isEditing, onCancel 
     const reader = new FileReader();
     reader.onload = (e) => {
       const result = e.target?.result as string;
-      setFormData((prev: any) => ({ ...prev, image: result }));
+      setFormData((prev) => ({ ...prev, image: result }));
       toast.success('Image uploaded successfully');
     };
     reader.readAsDataURL(file);
@@ -77,7 +87,7 @@ const ProductForm = ({ formData, setFormData, handleSubmit, isEditing, onCancel 
         <Input
           id="name"
           value={formData.name}
-          onChange={(e) => setFormData((prev: any) => ({ ...prev, name: e.target.value }))}
+          onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
           required
         />
       </div>
@@ -89,7 +99,7 @@ const ProductForm = ({ formData, setFormData, handleSubmit, isEditing, onCancel 
             id="price"
             type="number"
             value={formData.price}
-            onChange={(e) => setFormData((prev: any) => ({ ...prev, price: e.target.value }))}
+            onChange={(e) => setFormData((prev) => ({ ...prev, price: e.target.value }))}
             required
           />
         </div>
@@ -98,7 +108,7 @@ const ProductForm = ({ formData, setFormData, handleSubmit, isEditing, onCancel 
           <Input
             id="category"
             value={formData.category}
-            onChange={(e) => setFormData((prev: any) => ({ ...prev, category: e.target.value }))}
+            onChange={(e) => setFormData((prev) => ({ ...prev, category: e.target.value }))}
             placeholder="e.g., Electronics"
             required
           />
@@ -110,7 +120,7 @@ const ProductForm = ({ formData, setFormData, handleSubmit, isEditing, onCancel 
         <Input
           id="description"
           value={formData.description}
-          onChange={(e) => setFormData((prev: any) => ({ ...prev, description: e.target.value }))}
+          onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
         />
       </div>
 
@@ -119,7 +129,7 @@ const ProductForm = ({ formData, setFormData, handleSubmit, isEditing, onCancel 
         <Textarea
           id="detailedDescription"
           value={formData.detailedDescription}
-          onChange={(e) => setFormData((prev: any) => ({ ...prev, detailedDescription: e.target.value }))}
+          onChange={(e) => setFormData((prev) => ({ ...prev, detailedDescription: e.target.value }))}
           rows={3}
         />
       </div>
@@ -150,7 +160,7 @@ const ProductForm = ({ formData, setFormData, handleSubmit, isEditing, onCancel 
                   size="sm"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setFormData((prev: any) => ({ ...prev, image: '' }));
+                    setFormData((prev) => ({ ...prev, image: '' }));
                   }}
                 >
                   <X className="w-4 h-4 mr-2" />
@@ -185,7 +195,7 @@ const ProductForm = ({ formData, setFormData, handleSubmit, isEditing, onCancel 
             <Input
               id="image"
               value={formData.image}
-              onChange={(e) => setFormData((prev: any) => ({ ...prev, image: e.target.value }))}
+              onChange={(e) => setFormData((prev) => ({ ...prev, image: e.target.value }))}
               placeholder="Paste Image URL directly..."
               className="pl-12"
             />
@@ -195,7 +205,7 @@ const ProductForm = ({ formData, setFormData, handleSubmit, isEditing, onCancel 
 
       <div>
         <Label htmlFor="stock">Stock Status</Label>
-        <Select value={formData.stock} onValueChange={(value: any) => setFormData((prev: any) => ({ ...prev, stock: value }))}>
+        <Select value={formData.stock} onValueChange={(value: 'in-stock' | 'out-of-stock' | 'low-stock') => setFormData((prev) => ({ ...prev, stock: value }))}>
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
@@ -233,14 +243,14 @@ export default function AdminProducts() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ProductFormData>({
     name: '',
     price: '',
     description: '',
     detailedDescription: '',
     image: '',
     category: '',
-    stock: 'in-stock' as 'in-stock' | 'out-of-stock' | 'low-stock',
+    stock: 'in-stock',
   });
 
   const categories = [...new Set(products.map(p => p.category))];

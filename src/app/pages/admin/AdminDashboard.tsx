@@ -13,6 +13,7 @@ import {
   Menu,
   X,
   Gift,
+  Mail,
 } from 'lucide-react';
 
 // Import admin sub-pages (we'll create these)
@@ -24,6 +25,7 @@ import AdminContent from './AdminContent';
 import AdminDistributors from './AdminDistributors';
 import AdminReports from './AdminReports';
 import AdminSpinWheel from './AdminSpinWheel';
+import EmailTemplates from './EmailTemplates';
 
 export default function AdminDashboard() {
   const { user, logout } = useStore();
@@ -56,6 +58,7 @@ export default function AdminDashboard() {
     { path: '/admin/customers', icon: Users, label: 'Customers' },
     { path: '/admin/distributors', icon: Users, label: 'Distributors' },
     { path: '/admin/content', icon: LayoutDashboard, label: 'Content' },
+    { path: '/admin/email-templates', icon: Mail, label: 'Email Templates' }, // New Item
     { path: '/admin/reports', icon: BarChart3, label: 'Reports' },
     { path: '/admin/spin-wheel', icon: Gift, label: 'Spin Wheel' },
   ];
@@ -131,6 +134,7 @@ export default function AdminDashboard() {
             <Route path="customers" element={<AdminCustomers />} />
             <Route path="content" element={<AdminContent />} />
             <Route path="distributors" element={<AdminDistributors />} />
+            <Route path="email-templates" element={<EmailTemplates />} />
             <Route path="reports" element={<AdminReports />} />
             <Route path="spin-wheel" element={<AdminSpinWheel />} />
             <Route path="*" element={<AdminOverview />} />

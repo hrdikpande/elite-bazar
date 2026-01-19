@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useStore } from '../../contexts/StoreContext';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
@@ -11,6 +11,8 @@ import { motion } from 'motion/react';
 export default function AdminLogin() {
   const { login } = useStore();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/admin/dashboard';
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -24,7 +26,7 @@ export default function AdminLogin() {
 
     if (result.success) {
       // Toast handled in Context
-      navigate('/admin/dashboard');
+      navigate(from, { replace: true });
     }
     // Error handled in Context
   };

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import { useNavigate, Link, useSearchParams } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams, useLocation } from 'react-router-dom';
 import UserLayout from '../../components/UserLayout';
 import { useStore } from '../../contexts/StoreContext';
 import { Button } from '../../components/ui/button';
@@ -12,8 +12,11 @@ import { toast } from 'sonner';
 export default function UserLogin() {
     const { login } = useStore();
     const navigate = useNavigate();
+    const location = useLocation();
     const [searchParams] = useSearchParams();
-    const redirect = searchParams.get('redirect') || '/';
+
+    // Prioritize location state (from ProtectedRoute), then query param, then default
+    const redirectPath = location.state?.from?.pathname || searchParams.get('redirect') || '/';
 
     const [formData, setFormData] = useState({
         username: '',
@@ -28,7 +31,7 @@ export default function UserLogin() {
             const result = await login(formData.username, formData.password, 'customer');
             if (result.success) {
                 // Toast handled in Context
-                navigate(redirect);
+                navigate(redirectPath, { replace: true });
             }
             // Error toast handled in Context
         } catch (err) {

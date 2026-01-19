@@ -191,7 +191,8 @@ export interface StoreContextType {
   updateSpinWheelRewards: (rewards: Reward[]) => void;
 
   // Password Management
-  updatePassword: (userId: string, newPassword: string) => Promise<void>;
+  updatePassword: (userId: string, newPassword: string) => Promise<boolean>;
+  resetPasswordForEmail: (email: string) => Promise<boolean>;
   users: User[]; // Admin view of users
 }
 
@@ -325,7 +326,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       // Configs
       const { data: configs } = await supabase.from('page_configs').select('*');
       if (configs) {
-        configs.forEach((c: any) => {
+        interface PageConfig { key: string, value: any }
+        (configs as PageConfig[]).forEach((c) => {
           if (c.key === 'about') setAboutPageConfig(c.value);
           if (c.key === 'contact') setContactPageConfig(c.value);
         });
@@ -339,11 +341,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     try {
       // Orders
       const { data: orderData } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
-      if (orderData) setOrders(orderData as any);
+      if (orderData) setOrders(orderData as unknown as Order[]);
 
       // Addresses
       const { data: addrData } = await supabase.from('addresses').select('*');
-      if (addrData) setAddresses(addrData as any);
+      if (addrData) setAddresses(addrData as unknown as Address[]);
 
       // Wishlist
       const { data: wishData } = await supabase.from('wishlist').select('productId');
@@ -576,6 +578,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     if (!error) {
       setOrders(prev => [newOrder as Order, ...prev]);
       clearCart();
+
+      // Simulate/Trigger Email
+      console.log(`[Email Service] Triggering Order Confirmation for ${newOrder.email}`);
+      // In production, this would be: await supabase.functions.invoke('send-order-email', { body: { orderId: newOrder.id } })
+
       return newOrder.id;
     } else {
       console.error("Order failed", error);
@@ -806,14 +813,35 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   // Stubs
   const updateDistributorPassword = () => { };
-  const updatePassword = async (userId: string, newPassword: string) => {
+  const updatePassword = async (userId: string, newPassword: string): Promise<boolean> => {
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     if (!error) {
       toast.success("Password updated successfully");
+      return true;
     } else {
       toast.error(error.message || "Failed to update password");
+      return false;
     }
   };
+
+  const resetPasswordForEmail = async (email: string): Promise<boolean> => {
+    // Determine the redirect URL based on environment
+    // Use window.location.origin to be dynamic (works for localhost and netlify)
+    const redirectTo = `${window.location.origin}/update-password`;
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return false;
+    }
+
+    toast.success("Password reset link sent to your email");
+    return true;
+  };
+
   const updateFeaturedProducts = () => { };
   const updateSpinWheelRewards = () => { };
   const updateAboutContent = () => { };
@@ -827,6 +855,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     distributors, addDistributor, updateDistributor, updateDistributorPassword, deleteDistributor, getDistributorByCoupon,
     customers, addCustomer, updateCustomer, deleteCustomer,
     user, login, register, registerDistributor, logout,
+    resetPasswordForEmail,
     wishlist, addToWishlist, removeFromWishlist,
     addresses, addAddress, removeAddress, updateAddress,
     banners, updateBanners, featuredProducts, updateFeaturedProducts,

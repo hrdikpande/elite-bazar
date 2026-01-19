@@ -22,15 +22,20 @@ export default function DistributorRegister() {
         showConfirmPassword: false,
     });
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsSubmitting(true);
         if (formData.password !== formData.confirmPassword) {
             toast.error('Passwords do not match');
+            setIsSubmitting(false);
             return;
         }
 
         if (formData.password.length < 6) {
             toast.error('Password must be at least 6 characters');
+            setIsSubmitting(false);
             return;
         }
 
@@ -38,6 +43,8 @@ export default function DistributorRegister() {
         if (success) {
             toast.success('Application received! You can now login.');
             navigate('/distributor/login');
+        } else {
+            setIsSubmitting(false);
         }
         // Error handled in Context
     };
@@ -128,8 +135,8 @@ export default function DistributorRegister() {
                         </div>
 
                         <div className="pt-2 space-y-4">
-                            <Button type="submit" className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90">
-                                Apply for Partnership
+                            <Button type="submit" className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90" disabled={isSubmitting}>
+                                {isSubmitting ? 'Registering...' : 'Apply for Partnership'}
                             </Button>
 
                             <div className="text-center text-sm text-muted-foreground">

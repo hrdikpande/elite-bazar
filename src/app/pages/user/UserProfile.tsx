@@ -28,6 +28,7 @@ export default function UserProfile() {
     const [showCurrentPass, setShowCurrentPass] = useState(false);
     const [showNewPass, setShowNewPass] = useState(false);
     const [showConfirmPass, setShowConfirmPass] = useState(false);
+    const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
 
     useEffect(() => {
         if (!user) {
@@ -265,8 +266,9 @@ export default function UserProfile() {
                                         <CardTitle className="text-lg">Change Password</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <form onSubmit={(e) => {
+                                        <form onSubmit={async (e) => {
                                             e.preventDefault();
+                                            setIsUpdatingPassword(true);
                                             const form = e.target as HTMLFormElement;
                                             const currentPass = (form.elements.namedItem('current-password') as HTMLInputElement).value;
                                             const newPass = (form.elements.namedItem('new-password') as HTMLInputElement).value;
@@ -274,15 +276,22 @@ export default function UserProfile() {
 
                                             if (newPass !== confirmPass) {
                                                 toast.error('New passwords do not match');
+                                                setIsUpdatingPassword(false);
                                                 return;
                                             }
 
                                             // Client-side password check removed as we don't store it.
                                             // Backend verification happens via Supabase re-auth flow if strictness needed.
 
-                                            updatePassword(user.id, newPass);
-                                            toast.success('Password updated successfully');
-                                            form.reset();
+                                            const success = await updatePassword(user.id, newPass);
+                                            if (success) {
+                                                // Success toast is handled in Context, but we can clear form here
+                                                form.reset();
+                                                setShowCurrentPass(false);
+                                                setShowNewPass(false);
+                                                setShowConfirmPass(false);
+                                            }
+                                            setIsUpdatingPassword(false);
                                         }} className="space-y-4">
                                             <div className="space-y-2">
                                                 <Label htmlFor="current-password">Current Password</Label>
@@ -346,7 +355,9 @@ export default function UserProfile() {
                                                     </button>
                                                 </div>
                                             </div>
-                                            <Button type="submit" className="w-full bg-primary text-primary-foreground">Update Password</Button>
+                                            <Button type="submit" className="w-full bg-primary text-primary-foreground" disabled={isUpdatingPassword}>
+                                                {isUpdatingPassword ? 'Updating...' : 'Update Password'}
+                                            </Button>
                                         </form>
                                     </CardContent>
                                 </Card>

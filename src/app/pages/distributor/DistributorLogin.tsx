@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useStore } from '../../contexts/StoreContext';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
@@ -11,6 +11,8 @@ import { motion } from 'motion/react';
 export default function DistributorLogin() {
   const { login, distributors } = useStore();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/distributor/dashboard';
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -26,7 +28,7 @@ export default function DistributorLogin() {
 
     if (result.success) {
       // Toast handled in Context
-      navigate('/distributor/dashboard');
+      navigate(from, { replace: true });
     }
     // Error handled in Context
     setIsLoading(false);

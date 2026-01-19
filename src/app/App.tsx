@@ -14,7 +14,8 @@ const OrderSuccessPage = lazy(() => import('./pages/user/OrderSuccessPage'));
 
 const UserLogin = lazy(() => import('./pages/user/UserLogin'));
 const UserRegister = lazy(() => import('./pages/user/UserRegister'));
-const ForgotPassword = lazy(() => import('./pages/user/ForgotPassword'));
+const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
+const UpdatePassword = lazy(() => import('./pages/auth/UpdatePassword'));
 const UserProfile = lazy(() => import('./pages/user/UserProfile'));
 const AboutPage = lazy(() => import('./pages/user/AboutPage'));
 const ContactPage = lazy(() => import('./pages/user/ContactPage'));
@@ -25,6 +26,7 @@ const TermsPage = lazy(() => import('./pages/user/TermsPage'));
 // Admin Portal Pages
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const EmailTemplates = lazy(() => import('./pages/admin/EmailTemplates'));
 
 // Distributor Portal Pages
 const DistributorLogin = lazy(() => import('./pages/distributor/DistributorLogin'));
@@ -78,6 +80,7 @@ export default function App() {
               <Route path="/login" element={<UserLogin />} />
               <Route path="/register" element={<UserRegister />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/update-password" element={<UpdatePassword />} />
 
               {/* Static Pages */}
               <Route path="/about" element={<AboutPage />} />

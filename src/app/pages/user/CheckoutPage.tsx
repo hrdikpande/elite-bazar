@@ -107,26 +107,32 @@ export default function CheckoutPage() {
     }
   };
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     // Reconstruct full address string for Order object
     const fullAddress = `${formData.street}, ${formData.city}, ${formData.state} - ${formData.zip}`;
 
     if (!formData.customerName || !formData.phone || !formData.street || !formData.city || !formData.zip) {
       toast.error('Please fill in all required fields');
+      setIsSubmitting(false);
       return;
     }
 
     // Strict Phone Validation (10 digits)
     if (!/^\d{10}$/.test(formData.phone)) {
       toast.error('Please enter a valid 10-digit phone number');
+      setIsSubmitting(false);
       return;
     }
 
     // Strict ZIP Validation (6 digits)
     if (!/^\d{6}$/.test(formData.zip)) {
       toast.error('Please enter a valid 6-digit ZIP/PIN code');
+      setIsSubmitting(false);
       return;
     }
 
@@ -163,6 +169,8 @@ export default function CheckoutPage() {
     if (orderId) {
       toast.success('Order placed successfully!');
       navigate(`/order-success/${orderId}`);
+    } else {
+      setIsSubmitting(false);
     }
   };
 
@@ -362,8 +370,8 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  <Button type="submit" size="lg" className="w-full">
-                    Place Order
+                  <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? 'Processing...' : 'Place Order'}
                   </Button>
                 </CardContent>
               </Card>
