@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import UserLayout from '../../components/UserLayout';
-import { useStore, Address } from '../../contexts/StoreContext';
+import { useStore } from '../../contexts/StoreContext';
+import { Address } from '../../types';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Input } from '../../components/ui/input';

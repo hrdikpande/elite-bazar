@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import UserLayout from '../../components/UserLayout';
-import { useStore, Address, Product } from '../../contexts/StoreContext';
+import { useStore } from '../../contexts/StoreContext';
+import { Address, Product } from '../../types';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';

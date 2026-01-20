@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useStore, AboutPageConfig, ContactPageConfig, BannerItem } from '../../contexts/StoreContext';
+import { useStore } from '../../contexts/StoreContext';
+import { AboutPageConfig, ContactPageConfig, BannerItem } from '../../types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';

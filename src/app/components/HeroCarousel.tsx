@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
 import { Link } from 'react-router-dom';
-import { BannerItem } from '../contexts/StoreContext';
+import { BannerItem } from '../types';
 
 interface HeroCarouselProps {
     banners: BannerItem[];

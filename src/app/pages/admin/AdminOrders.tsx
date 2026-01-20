@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useStore, Order } from '../../contexts/StoreContext';
+import { useStore } from '../../contexts/StoreContext';
+import { Order } from '../../types';
 import { Card, CardContent } from '../../components/ui/card';
 import { Input } from '../../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';

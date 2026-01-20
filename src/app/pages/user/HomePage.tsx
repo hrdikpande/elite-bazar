@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import UserLayout from '../../components/UserLayout';
 import { useStore } from '../../contexts/StoreContext';
+import { Product } from '../../types';
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import { ArrowRight, Heart } from 'lucide-react';

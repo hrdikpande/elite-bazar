@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useStore, Distributor } from '../../contexts/StoreContext';
+import { useStore } from '../../contexts/StoreContext';
+import { Distributor } from '../../types';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
